@@ -1,4 +1,9 @@
 import streamlit as st
+st.set_page_config(
+    page_title="Mohamed Dyn",
+    layout="wide",
+    page_icon="👨‍💻"
+)
 import content as data
 import time
 import os
@@ -10,7 +15,6 @@ import requests
 # ==============================================================================
 # 1. CONFIGURATION & GESTION DE L'ÉTAT (URL & SESSION)
 # ==============================================================================
-st.set_page_config(page_title="Mohamed Dyn - Portfolio", layout="wide", page_icon="👨‍💻")
 
 # Récupération des paramètres URL
 query_params = st.query_params
