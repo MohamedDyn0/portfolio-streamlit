@@ -10,7 +10,7 @@ import requests
 # ==============================================================================
 # 1. CONFIGURATION & GESTION DE L'ÉTAT (URL & SESSION)
 # ==============================================================================
-st.set_page_config(page_title=f"Portfolio - {data.INFO['name']}", page_icon="👨‍💻", layout="wide")
+st.set_page_config(page_title="Mohamed Dyn - Portfolio", layout="wide", page_icon="👨‍💻")
 
 # Récupération des paramètres URL
 query_params = st.query_params
@@ -1072,10 +1072,9 @@ def show_home_view():
                             except Exception as e:
                                 st.error(f"Error : {e}")
 
-# ==============================================================================
+
 # --- MAIN ROUTER ---
-# ==============================================================================
-# C'est ici que l'on appelle les fonctions spécifiques selon la langue
+
 if project_id:
     if lang == 'en':
         show_project_detail_en(project_id)
