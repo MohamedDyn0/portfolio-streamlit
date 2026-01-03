@@ -1,0 +1,7 @@
+# Fichiers de configuration Streamlit (mots de passe)
+.streamlit/secrets.toml
+
+# Fichiers temporaires Python (inutiles)
+__pycache__/
+*.pyc
+

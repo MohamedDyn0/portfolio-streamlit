@@ -1,0 +1,11 @@
+streamlit
+streamlit-lottie
+pillow
+streamlit-option-menu
+Pillow
+requests
+pandas
+numpy
+ultralytics
+textblob
+google-generativeai
