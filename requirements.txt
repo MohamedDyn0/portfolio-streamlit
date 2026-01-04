@@ -1,14 +1,10 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-torch
-torchvision
 streamlit
-streamlit-lottie
-pillow
 streamlit-option-menu
-requests
 pandas
 numpy
-ultralytics
+Pillow
+requests
 textblob
+ultralytics
 google-generativeai
 opencv-python-headless
