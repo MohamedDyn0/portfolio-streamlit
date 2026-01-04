@@ -43,23 +43,17 @@ header[data-testid="stHeader"] {
 /* ==========================================================================
    PHOTO DE PROFIL (CERCLE PARFAIT)
    ========================================================================== */
+/* FORCE L'IMAGE EN PETIT CERCLE CENTRÉ */
 [data-testid="stSidebar"] img {
-    /* 1. Forme et Taille */
+    width: 140px !important;       /* Taille réduite */
+    height: 140px !important;
     border-radius: 50% !important;
-    width: 140px !important;
-    height: 140px !important;  /* Doit être égal à width pour un cercle */
-    
-    /* 2. Remplissage */
-    object-fit: cover !important; /* L'image remplit le cercle sans être écrasée */
-    
-    /* 3. Centrage et Bordure */
+    object-fit: cover !important;
     display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin-left: auto !important;  /* Centrage automatique */
+    margin-right: auto !important; /* Centrage automatique */
     margin-bottom: 20px !important;
-    
-    border: 3px solid #FF9F1C !important; /* Votre bordure orange */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 3px solid #FF9F1C !important;
 }
 
 /* Réduit la taille du texte dans la sidebar */
