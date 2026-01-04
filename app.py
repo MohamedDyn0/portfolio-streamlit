@@ -555,19 +555,8 @@ def show_home_view():
         file_path = os.path.join(current_dir, "assets", "profile.jpg")
         
         if os.path.exists(file_path):
-            st.markdown("""
-            <style>
-                [data-testid="stSidebar"] img {
-                    border-radius: 50%;
-                    width: 170px;
-                    height: 170px;
-                    object-fit: cover;
-                    display: block;
-                    margin: 0 0 20px 50px; 
-                    border: 3px solid #FF9F1C;
-                }
-            </style>
-            """, unsafe_allow_html=True)
+# --- SUPPRIMEZ CE BLOC DANS APP.PY 
+# -------------------------------------
             st.image(file_path) 
         else:
             st.warning(f"Image introuvable : {file_path}")
