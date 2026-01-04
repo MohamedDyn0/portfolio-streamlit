@@ -3,7 +3,33 @@
 
 html, body, [class*="css"] { font-family: 'Poppins', sans-serif; color: #1f2937; }
 
-/* --- PROJETS (Déjà existant) --- */
+/* ==========================================================================
+   1. FORCE WIDE LAYOUT (Règles Prioritaires)
+   ========================================================================== */
+/* Force le conteneur principal à prendre toute la largeur disponible */
+.block-container {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+    padding-left: 3rem !important;  /* Ajustez ici si c'est trop large ou trop étroit */
+    padding-right: 3rem !important;
+    max-width: 100% !important;
+}
+
+/* Sélecteur spécifique pour forcer les versions récentes de Streamlit */
+[data-testid="stAppViewContainer"] > .main {
+    max-width: 100% !important;
+}
+
+/* (Optionnel) Cache le header transparent par défaut pour gagner de la place */
+header[data-testid="stHeader"] {
+    background-color: rgba(0,0,0,0) !important;
+}
+
+/* ==========================================================================
+   2. VOTRE DESIGN (Cartes, Timeline, Badges...)
+   ========================================================================== */
+
+/* --- PROJETS --- */
 .project-card-container {
     background: white; border-radius: 15px; border: 1px solid #e5e7eb;
     transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
@@ -29,14 +55,12 @@ a.card-main-link { text-decoration: none !important; color: inherit !important; 
 .read-more { color: #4F46E5 !important; font-weight: 600; font-size: 0.9em; text-decoration: none !important; }
 .read-more:hover { text-decoration: underline !important; }
 
-/* --- NOUVEAU : EXPÉRIENCES CLIQUABLES --- */
-/* On garde le style timeline mais on le rend interactif */
+/* --- EXPÉRIENCES (Interactive) --- */
 .timeline-link {
     text-decoration: none !important;
     color: inherit !important;
-    display: block; /* Rend toute la zone cliquable */
+    display: block;
 }
-
 .timeline-card {
     background: white;
     border: 1px solid #e5e7eb;
@@ -44,21 +68,17 @@ a.card-main-link { text-decoration: none !important; color: inherit !important; 
     padding: 20px;
     transition: all 0.2s ease;
 }
-
-/* Effet au survol de l'expérience */
 .timeline-card:hover {
     border-color: #4F46E5;
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
-    transform: translateX(5px); /* Petit décalage vers la droite pour le style */
+    transform: translateX(5px);
 }
-
-/* Timeline (Barre verticale) */
 .timeline-item { border-left: 3px solid #4F46E5; padding-left: 25px; margin-bottom: 30px; position: relative; }
 .timeline-item::before {
     content: ''; position: absolute; left: -10px; top: 20px; width: 17px; height: 17px; background: #4F46E5; border-radius: 50%; border: 3px solid white;
 }
 
-/* Elements Communs */
+/* --- ELEMENTS COMMUNS --- */
 .skill-tag {
     display: inline-block; background: linear-gradient(90deg, #4F46E5, #818CF8); color: white;
     padding: 3px 10px; border-radius: 50px; font-size: 0.75em; margin: 2px; font-weight: 500;
@@ -68,22 +88,21 @@ a.card-main-link { text-decoration: none !important; color: inherit !important; 
     border-radius: 8px; text-decoration: none; font-weight: 600; margin-bottom: 20px; transition: all 0.2s;
 }
 .back-btn:hover { border-color: #4F46E5; color: #4F46E5; }
-/* --- NOUVEAU STYLE : Badges Compétences (Plus clairs) --- */
+
+/* --- BADGES COMPÉTENCES --- */
 .tech-badge {
     display: inline-block;
-    background-color: white; /* Fond blanc pour la lisibilité */
-    color: #4F46E5; /* Texte Indigo */
-    border: 1px solid #e0e7ff; /* Bordure très légère */
-    padding: 10px 18px; /* Beaucoup d'espace interne */
-    border-radius: 8px; /* Coins légèrement arrondis (style moderne) */
-    font-size: 1rem; /* Texte plus grand */
+    background-color: white;
+    color: #4F46E5;
+    border: 1px solid #e0e7ff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
     font-weight: 600;
-    margin: 6px; /* Espace entre les badges */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03); /* Ombre subtile */
+    margin: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
     transition: all 0.2s ease;
 }
-
-/* Effet au survol : le badge se colore */
 .tech-badge:hover {
     background-color: #4F46E5;
     color: white;
@@ -92,7 +111,6 @@ a.card-main-link { text-decoration: none !important; color: inherit !important; 
     box-shadow: 0 4px 8px rgba(79, 70, 229, 0.2);
 }
 
-/* Titre de catégorie de compétence */
 .skill-category-title {
     color: #1f2937;
     font-size: 1.2rem;
@@ -102,9 +120,8 @@ a.card-main-link { text-decoration: none !important; color: inherit !important; 
     align-items: center;
 }
 
-/* Conteneur blanc pour chaque catégorie */
 .skill-box {
-    background: #f9fafb; /* Gris très très clair */
+    background: #f9fafb;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     padding: 20px;
