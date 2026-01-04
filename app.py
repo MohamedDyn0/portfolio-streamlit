@@ -2,8 +2,24 @@ import streamlit as st
 st.set_page_config(
     page_title="Mohamed Dyn",
     layout="wide",
-    page_icon="👨‍💻"
+    initial_sidebar_state="expanded"
 )
+
+# ---------------------------------------------------------
+# ETAPE 2 : LE CSS (POUR FORCER SI LA CONFIG ECHOUE)
+# ---------------------------------------------------------
+st.markdown("""
+<style>
+    /* Force le conteneur principal à prendre toute la largeur */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        padding-bottom: 2rem;
+        max-width: 100%;
+    }
+</style>
+""", unsafe_allow_html=True)
 import content as data
 import time
 import os
