@@ -44,25 +44,29 @@ header[data-testid="stHeader"] {
    PHOTO DE PROFIL (CERCLE PARFAIT)
    ========================================================================== */
 /* FORCE L'IMAGE EN PETIT CERCLE CENTRÉ */
-[data-testid="stSidebar"] img {
-    width: 140px !important;       /* Taille réduite */
-    height: 140px !important;
-    border-radius: 50% !important;
-    object-fit: cover !important;
-    display: block !important;
-    margin-left: auto !important;  /* Centrage automatique */
-    margin-right: auto !important; /* Centrage automatique */
-    margin-bottom: 20px !important;
-    border: 3px solid #FF9F1C !important;
-}
+/* DANS LE FICHIER STYLE.CSS */
 
-/* Réduit la taille du texte dans la sidebar */
-[data-testid="stSidebar"] .stMarkdown h1 {
-    font-size: 1.5rem !important; /* Nom plus petit */
-    text-align: center;
-}
-[data-testid="stSidebar"] .stMarkdown p {
-    font-size: 0.85rem !important; /* Infos de contact plus petites */
+[data-testid="stSidebar"] img {
+    /* 1. GÉOMÉTRIE STRICTE (Carré parfait = Cercle parfait) */
+    width: 150px !important;
+    height: 150px !important;
+    min-width: 150px !important;  /* Empêche l'écrasement */
+    min-height: 150px !important;
+    
+    /* 2. FORME */
+    border-radius: 50% !important;
+    
+    /* 3. CONTENU */
+    object-fit: cover !important; /* Zoom dans l'image pour remplir le cercle */
+    
+    /* 4. POSITION */
+    display: block !important;
+    margin-left: auto !important;   /* Centre horizontalement */
+    margin-right: auto !important;  /* Centre horizontalement */
+    margin-top: 20px !important;
+    
+    /* 5. DÉCORATION */
+    border: 3px solid #FF9F1C !important;
 }
 
 /* ==========================================================================
