@@ -809,7 +809,7 @@ def show_home_view():
     # -------------------------------------------------------------
     else:
         # A. HEADER
-        c1, c2, c3 = st.columns([3, 0.7, 0.5])
+        c1, c2, c3 = st.columns([3, 1, 0.5])
         
         with c1:
             st.markdown(f"<h1 style='font-size:3.5rem; margin-top: -10px;'>{UI['greeting']} <span style='color:#4F46E5'>{current_info['name']}</span></h1>", unsafe_allow_html=True)
@@ -832,7 +832,7 @@ def show_home_view():
                 text-decoration: none; 
                 background-color: white; 
                 color: #1f2937; 
-                padding: 8px 32px; 
+                padding: 8px 28px; 
                 border: 1px solid #e5e7eb; 
                 border-radius: 6px; 
                 font-weight: 600; 
@@ -857,54 +857,101 @@ def show_home_view():
             
             # On affiche tout sur une seule ligne
             st.markdown(f"<div style='display:flex; margin-top:5px;'>{html_btns}</div>", unsafe_allow_html=True)
-        
+ 
 # DANS APP.PY (Section Header - Colonne 3)
-        
         with c3:
             st.markdown("<br>", unsafe_allow_html=True)
             
-            # On met les drapeaux directement dans le texte
-            # Si vous êtes sur Windows, vous verrez peut-être "FR", mais sur le web ça sera souvent un drapeau
-            current_code = "🇫🇷 FR" if lang == 'fr' else "🇬🇧 EN"
-            # --- AJOUTEZ CE BLOC CSS POUR "MANAGER" LA TAILLE ---
-            st.markdown("""
+            # --- 1. PRÉPARATION DES IMAGES ---
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            path_fr = os.path.join(current_dir, "assets", "fr.png")
+            path_en = os.path.join(current_dir, "assets", "gb.png")
+            
+            def get_img_as_base64(file_path):
+                if not os.path.exists(file_path): return ""
+                with open(file_path, "rb") as f:
+                    data = f.read()
+                return base64.b64encode(data).decode()
+
+            # Image pour le bouton principal (Fermé)
+            current_flag_path = path_fr if lang == 'fr' else path_en
+            b64_flag = get_img_as_base64(current_flag_path)
+
+            # --- 2. LOGIQUE DE SÉLECTION (Cadre Bleu) ---
+            # Si FR est actif, le bouton FR devient "primary" (ce qui activera le cadre bleu CSS)
+            type_fr = "primary" if lang == 'fr' else "secondary"
+            type_en = "primary" if lang == 'en' else "secondary"
+
+            # --- 3. CSS AVANCÉ ---
+            st.markdown(f"""
             <style>
-                /* Cible les boutons UNIQUEMENT dans le popover */
-                div[data-testid="stPopoverBody"] button {
-                    height: 20px !important;
-                    width: 20px !important;         /* 1. La Hauteur (Standard ~45px) */
-                    padding-top: 0px !important;     /* 2. Enlever l'espace inutile en haut */
-                    padding-bottom: 0px !important;  /* 3. Enlever l'espace inutile en bas */
-                    font-size: 16px !important;      /* 4. Taille du texte */
-                    border-radius: 8px !important;   /* 5. Arrondi des coins */
-                }
+                /* CIBLE LE BOUTON DÉCLENCHEUR DU POPOVER */
+                /* On utilise [data-testid="stPopover"] pour cibler le conteneur */
+                div[data-testid="stPopover"] button {{
+                    background-image: url("data:image/png;base64,{b64_flag}") !important;
+                    background-size: 24px !important;
+                    background-repeat: no-repeat !important;
+                    background-position: 12px center !important; /* Calé à gauche */
+                    padding-left: 45px !important;              /* Espace pour l'image */
+                    
+                    /* Force l'apparence */
+                    border: 1px solid #E5E7EB !important;
+                    color: #374151 !important;
+                    background-color: white !important;
+                    opacity: 1 !important; /* Force la visibilité */
+                }}
+
+                /* B. LE MENU (Largeur) */
+                div[data-testid="stPopoverBody"] {{
+                    width: 50px !important;
+                    max-width: 50px !important;
+                }}
+                
+                /* C. STYLE DU BOUTON SÉLECTIONNÉ (CADRE BLEU) */
+                /* On cible les boutons de type "primary" dans le popover */
+                div[data-testid="stPopoverBody"] button[kind="primary"] {{
+                    border: 2px solid #4F46E5 !important;  /* Cadre Bleu */
+                    color: #4F46E5 !important;             /* Texte Bleu */
+                    background-color: #EEF2FF !important;  /* Fond bleu très pâle */
+                    font-weight: 700 !important;
+                    height: 45px !important;
+                    margin-bottom: 5px !important;
+                }}
+
+                /* D. STYLE DU BOUTON NON SÉLECTIONNÉ (GRIS) */
+                div[data-testid="stPopoverBody"] button[kind="secondary"] {{
+                    border: 1px solid #F3F4F6 !important;
+                    background: white !important;
+                    color: #6B7280 !important;
+                    height: 45px !important;
+                    margin-bottom: 5px !important;
+                }}
+                
+                /* Effet au survol pour le bouton non sélectionné */
+                div[data-testid="stPopoverBody"] button[kind="secondary"]:hover {{
+                    border-color: #4F46E5 !important;
+                    color: #4F46E5 !important;
+                }}
             </style>
             """, unsafe_allow_html=True)
-            # ------
-            
-            popover = st.popover(f"{current_code}", use_container_width=True)
+
+            # --- 4. AFFICHAGE DES BOUTONS ---
+            label_btn = "FR ▾" if lang == 'fr' else "EN ▾"
+            popover = st.popover(label_btn, use_container_width=True)
             
             with popover:
-                st.caption("Langue / Language")
+                st.caption("Sélectionnez / Select")
                 
-                type_fr = "primary" if lang == 'fr' else "secondary"
-                type_en = "primary" if lang == 'en' else "secondary"
-                
-                # BOUTON FRANÇAIS (Avec Emoji)
-                if st.button("🇫🇷 Français", type=type_fr, use_container_width=True):
+                # On utilise la variable type_fr/type_en définie plus haut
+                if st.button("Français", key="btn_fr", type=type_fr, use_container_width=True):
                     st.session_state.language = 'fr'
-                    st.query_params["lang"] = "fr" 
-                    st.rerun()
-                
-                # BOUTON ANGLAIS (Avec Emoji)
-                if st.button("🇬🇧 English", type=type_en, use_container_width=True):
-                    st.session_state.language = 'en'
-                    st.query_params["lang"] = "en" 
+                    st.query_params["lang"] = "fr"
                     st.rerun()
 
-            # IMPORTANT : Assurez-vous d'avoir SUPPRIMÉ tout le bloc de <style> CSS 
-            # qui servait à afficher les images flagcdn. On n'en a plus besoin.
-        
+                if st.button("English", key="btn_en", type=type_en, use_container_width=True):
+                    st.session_state.language = 'en'
+                    st.query_params["lang"] = "en"
+                    st.rerun()
         # --- TEXTE DE PRÉSENTATION ---
         st.markdown(UI["bio_html"], unsafe_allow_html=True)
 
