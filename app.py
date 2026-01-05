@@ -813,23 +813,48 @@ def show_home_view():
             st.markdown(f"<h1 style='font-size:3.5rem; margin-top: -10px;'>{UI['greeting']} <span style='color:#4F46E5'>{current_info['name']}</span></h1>", unsafe_allow_html=True)
             
             st.markdown(f"<p style='font-size:1.5rem; color:#4B5563'>{current_info['role']}</p>", unsafe_allow_html=True)
+# DANS APP.PY (Section Header)
+        
         with c2:
             st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown(UI["cv_title"])
-            cv_col1, cv_col2 = st.columns(2)
+            st.markdown(UI["cv_title"]) # Titre "Consulter mon CV"
+            
+            # --- MODIFICATION : Boutons HTML personnalisés (Plus petits) ---
             current_dir = os.path.dirname(os.path.abspath(__file__))
             path_fr = os.path.join(current_dir, "assets", "CV_Mohamed_Dyn_FR.pdf")
-            with cv_col1:
-                if os.path.exists(path_fr):
-                    with open(path_fr, "rb") as f:
-                        st.download_button(label="FR", data=f, file_name="CV_Mohamed_Dyn_FR.pdf", mime="application/pdf", use_container_width=True)
-                else: st.warning("FR?")
             path_en = os.path.join(current_dir, "assets", "CV_Mohamed_Dyn_EN.pdf")
-            with cv_col2:
-                if os.path.exists(path_en):
-                    with open(path_en, "rb") as f:
-                        st.download_button(label="EN", data=f, file_name="CV_Mohamed_Dyn_EN.pdf", mime="application/pdf", use_container_width=True)
-                else: st.warning("EN?")
+            
+            # Style CSS pour un bouton "Petit et Propre"
+            # padding: 5px 15px (Petit) | font-size: 0.85rem (Discret)
+            small_btn_style = """
+                text-decoration: none; 
+                background-color: white; 
+                color: #1f2937; 
+                padding: 5px 15px; 
+                border: 1px solid #e5e7eb; 
+                border-radius: 6px; 
+                font-weight: 600; 
+                font-size: 0.85rem; 
+                display: inline-flex; 
+                align-items: center; 
+                justify-content: center;
+                gap: 5px; 
+                margin-right: 8px;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+                transition: all 0.2s;
+            """
+            
+            # On génère le HTML des boutons
+            # Note: get_pdf_button est déjà définie plus haut dans votre code
+            html_btns = ""
+            if os.path.exists(path_fr):
+                html_btns += get_pdf_button(path_fr, "FR", custom_style=small_btn_style)
+            
+            if os.path.exists(path_en):
+                html_btns += get_pdf_button(path_en, "EN", custom_style=small_btn_style)
+            
+            # On affiche tout sur une seule ligne
+            st.markdown(f"<div style='display:flex; margin-top:5px;'>{html_btns}</div>", unsafe_allow_html=True)
         
         # COLONNE 3 : SÉLECTEUR DE LANGUE (Avec mise à jour URL)
         with c3:
