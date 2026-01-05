@@ -548,7 +548,7 @@ def show_experience_detail_en(e_id):
 # --- VUE : HOME / PORTFOLIO ---
 # ==============================================================================
 def show_home_view():
-    
+
     
     with st.sidebar:
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -829,7 +829,7 @@ def show_home_view():
                 text-decoration: none; 
                 background-color: white; 
                 color: #1f2937; 
-                padding: 8px 28px; 
+                padding: 8px 30px; 
                 border: 1px solid #e5e7eb; 
                 border-radius: 6px; 
                 font-weight: 600; 
@@ -858,8 +858,8 @@ def show_home_view():
 # DANS APP.PY (Section Header - Colonne 3)
         with c3:
             st.markdown("<br>", unsafe_allow_html=True)
-            btn_width     = "100px"  # Largeur du bouton principal (celui visible tout le temps)
-            btn_height    = "50px"   # Hauteur du bouton principal
+            btn_width     = "92px"  # Largeur du bouton principal (celui visible tout le temps)
+            btn_height    = "40px"   # Hauteur du bouton principal
             text_size     = "70px"
             
             # --- 1. PRÉPARATION DES IMAGES ---

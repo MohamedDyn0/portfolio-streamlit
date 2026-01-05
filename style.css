@@ -4,16 +4,16 @@
 html, body, [class*="css"] {
     font-family: 'Poppins', sans-serif;
     color: #1f2937;
-    font-size: 0.92rem !important; /* On réduit légèrement la taille globale (défaut souvent 1rem) */
+    font-size: 1rem !important; /* On réduit légèrement la taille globale (défaut souvent 1rem) */
 }
 
 
 /* Cible le conteneur principal sur toutes les versions de Streamlit */
 .block-container, [data-testid="stBlockContainer"] {
     max-width: 100% !important;
-    padding-left: 1rem !important;  /* Réduit la marge gauche */
-    padding-right: 1rem !important; /* Réduit la marge droite */
-    padding-top: 1rem !important;
+    padding-left: 5rem !important;  /* Réduit la marge gauche */
+    padding-right: 5rem !important; /* Réduit la marge droite */
+    padding-top: 5rem !important;
     padding-bottom: 2rem !important;
 }
 
