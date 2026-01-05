@@ -46,27 +46,24 @@ header[data-testid="stHeader"] {
 /* FORCE L'IMAGE EN PETIT CERCLE CENTRÉ */
 /* DANS LE FICHIER STYLE.CSS */
 
+/* DANS STYLE.CSS */
 [data-testid="stSidebar"] img {
-    /* 1. GÉOMÉTRIE STRICTE (Carré parfait = Cercle parfait) */
-    width: 170px !important;
-    height: 170px !important;
-    min-width: 170px !important;  /* Empêche l'écrasement */
-    min-height: 170px !important;
-    
-    /* 2. FORME */
+    /* FORME RONDE */
     border-radius: 50% !important;
     
-    /* 3. CONTENU */
-    object-fit: cover !important; /* Zoom dans l'image pour remplir le cercle */
+    /* TAILLE FIXE (Cercle parfait) */
+    width: 170px !important;
+    height: 170px !important;
     
-    /* 4. POSITION */
-    display: block !important;
-    margin-left: auto !important;   /* Centre horizontalement */
-    margin-right: auto !important;  /* Centre horizontalement */
-    margin-top: 20px !important;
+    /* REMPLISSAGE */
+    object-fit: cover !important;
     
-    /* 5. DÉCORATION */
+    /* BORDURE */
     border: 3px solid #FF9F1C !important;
+    
+    /* On enlève les marges bizarres, c'est Python qui gère le centre maintenant */
+    margin: 0 !important; 
+    display: block !important;
 }
 
 /* ==========================================================================

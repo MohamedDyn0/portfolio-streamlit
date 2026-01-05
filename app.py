@@ -556,10 +556,12 @@ def show_home_view():
         
         if os.path.exists(file_path):
 # --- SUPPRIMEZ CE BLOC DANS APP.PY 
-# -------------------------------------
-            st.image(file_path) 
-        else:
-            st.warning(f"Image introuvable : {file_path}")
+            col_gauche, col_image, col_droite = st.sidebar.columns([1, 2, 3.5])
+            
+            with col_image:
+                # L'image est mise uniquement dans la colonne du milieu
+                st.image(file_path, use_column_width=True)
+       
 
         st.title(current_info["name"])
         st.markdown(f"**{current_info['role']}**")
@@ -830,11 +832,11 @@ def show_home_view():
                 text-decoration: none; 
                 background-color: white; 
                 color: #1f2937; 
-                padding: 5px 15px; 
+                padding: 8px 28px; 
                 border: 1px solid #e5e7eb; 
                 border-radius: 6px; 
                 font-weight: 600; 
-                font-size: 0.85rem; 
+                font-size: 0.95rem; 
                 display: inline-flex; 
                 align-items: center; 
                 justify-content: center;
