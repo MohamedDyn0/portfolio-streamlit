@@ -809,7 +809,7 @@ def show_home_view():
     # -------------------------------------------------------------
     else:
         # A. HEADER
-        c1, c2, c3 = st.columns([3, 1, 0.5])
+        c1, c2, c3 = st.columns([3, 0.7, 0.5])
         
         with c1:
             st.markdown(f"<h1 style='font-size:3.5rem; margin-top: -10px;'>{UI['greeting']} <span style='color:#4F46E5'>{current_info['name']}</span></h1>", unsafe_allow_html=True)
@@ -832,7 +832,7 @@ def show_home_view():
                 text-decoration: none; 
                 background-color: white; 
                 color: #1f2937; 
-                padding: 8px 28px; 
+                padding: 8px 32px; 
                 border: 1px solid #e5e7eb; 
                 border-radius: 6px; 
                 font-weight: 600; 
@@ -858,55 +858,52 @@ def show_home_view():
             # On affiche tout sur une seule ligne
             st.markdown(f"<div style='display:flex; margin-top:5px;'>{html_btns}</div>", unsafe_allow_html=True)
         
-        # COLONNE 3 : SÉLECTEUR DE LANGUE (Avec mise à jour URL)
+# DANS APP.PY (Section Header - Colonne 3)
+        
         with c3:
             st.markdown("<br>", unsafe_allow_html=True)
-            flag_fr = "https://flagcdn.com/w40/fr.png"
-            flag_en = "https://flagcdn.com/w40/gb.png"
             
-            current_flag = flag_fr if lang == 'fr' else flag_en
-            current_code = "FR" if lang == 'fr' else "EN"
+            # On met les drapeaux directement dans le texte
+            # Si vous êtes sur Windows, vous verrez peut-être "FR", mais sur le web ça sera souvent un drapeau
+            current_code = "🇫🇷 FR" if lang == 'fr' else "🇬🇧 EN"
+            # --- AJOUTEZ CE BLOC CSS POUR "MANAGER" LA TAILLE ---
+            st.markdown("""
+            <style>
+                /* Cible les boutons UNIQUEMENT dans le popover */
+                div[data-testid="stPopoverBody"] button {
+                    height: 20px !important;
+                    width: 20px !important;         /* 1. La Hauteur (Standard ~45px) */
+                    padding-top: 0px !important;     /* 2. Enlever l'espace inutile en haut */
+                    padding-bottom: 0px !important;  /* 3. Enlever l'espace inutile en bas */
+                    font-size: 16px !important;      /* 4. Taille du texte */
+                    border-radius: 8px !important;   /* 5. Arrondi des coins */
+                }
+            </style>
+            """, unsafe_allow_html=True)
+            # ------
             
             popover = st.popover(f"{current_code}", use_container_width=True)
             
             with popover:
-                st.caption("Language / Langue")
+                st.caption("Langue / Language")
+                
                 type_fr = "primary" if lang == 'fr' else "secondary"
                 type_en = "primary" if lang == 'en' else "secondary"
-                if st.button("Français", type=type_fr, use_container_width=True):
+                
+                # BOUTON FRANÇAIS (Avec Emoji)
+                if st.button("🇫🇷 Français", type=type_fr, use_container_width=True):
                     st.session_state.language = 'fr'
                     st.query_params["lang"] = "fr" 
                     st.rerun()
                 
-                # 3. On applique la couleur au bouton Anglais
-                # AJOUTEZ : type=type_en
-                if st.button("English", type=type_en, use_container_width=True):
+                # BOUTON ANGLAIS (Avec Emoji)
+                if st.button("🇬🇧 English", type=type_en, use_container_width=True):
                     st.session_state.language = 'en'
                     st.query_params["lang"] = "en" 
                     st.rerun()
-              
 
-            st.markdown(f"""
-            <style>
-                div[data-testid="column"]:nth-of-type(3) button[kind="secondary"] {{
-                    border: 1px solid #ddd;
-                    background-color: #F2F4F8;
-                    color: #333;
-                    font-weight: bold;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 5px;
-                    padding-left: 30px; 
-                    background-image: url('{current_flag}');
-                    background-size: 20px;
-                    background-repeat: no-repeat;
-                    background-position: 10px center;
-                    width: 90px;
-                    height: 20px;
-                }}
-            </style>
-            """, unsafe_allow_html=True)
+            # IMPORTANT : Assurez-vous d'avoir SUPPRIMÉ tout le bloc de <style> CSS 
+            # qui servait à afficher les images flagcdn. On n'en a plus besoin.
         
         # --- TEXTE DE PRÉSENTATION ---
         st.markdown(UI["bio_html"], unsafe_allow_html=True)
