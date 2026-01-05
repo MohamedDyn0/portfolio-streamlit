@@ -48,10 +48,10 @@ header[data-testid="stHeader"] {
 
 [data-testid="stSidebar"] img {
     /* 1. GÉOMÉTRIE STRICTE (Carré parfait = Cercle parfait) */
-    width: 150px !important;
-    height: 150px !important;
-    min-width: 150px !important;  /* Empêche l'écrasement */
-    min-height: 150px !important;
+    width: 170px !important;
+    height: 170px !important;
+    min-width: 170px !important;  /* Empêche l'écrasement */
+    min-height: 170px !important;
     
     /* 2. FORME */
     border-radius: 50% !important;
