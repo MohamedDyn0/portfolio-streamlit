@@ -7,26 +7,26 @@ html, body, [class*="css"] {
     font-size: 0.92rem !important; /* On réduit légèrement la taille globale (défaut souvent 1rem) */
 }
 
-/* ==========================================================================
-   1. FORCE WIDE LAYOUT
-   ========================================================================== */
-.main .block-container {
+
+/* Cible le conteneur principal sur toutes les versions de Streamlit */
+.block-container, [data-testid="stBlockContainer"] {
     max-width: 100% !important;
+    padding-left: 1rem !important;  /* Réduit la marge gauche */
+    padding-right: 1rem !important; /* Réduit la marge droite */
     padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-    padding-left: 2rem !important;
-    padding-right: 2rem !important;
+    padding-bottom: 2rem !important;
 }
 
+/* Force l'application à prendre toute la largeur de l'écran */
 [data-testid="stAppViewContainer"] {
     max-width: 100vw !important;
     overflow-x: hidden !important;
 }
 
+/* Cache la barre colorée en haut */
 header[data-testid="stHeader"] {
     display: none !important;
 }
-
 /* ==========================================================================
    2. PHOTO DE PROFIL & SIDEBAR
    ========================================================================== */
@@ -35,49 +35,50 @@ header[data-testid="stHeader"] {
     border-right: 1px solid #E5E7EB;
 }
 
-/* Force l'image en cercle parfait */
-/* DANS STYLE.CSS */
 
-/* ... (Le reste de votre CSS) ... */
-
-/* ==========================================================================
-   PHOTO DE PROFIL (CERCLE PARFAIT)
-   ========================================================================== */
-/* FORCE L'IMAGE EN PETIT CERCLE CENTRÉ */
-/* DANS LE FICHIER STYLE.CSS */
-
-/* DANS STYLE.CSS */
 
 /* ==========================================================================
    PHOTO DE PROFIL (CERCLE PARFAIT & CENTRÉ)
    ========================================================================== */
 
-/* 1. On cible l'image dans la sidebar */
-[data-testid="stSidebar"] img {
-    /* FORME & TAILLE */
-    border-radius: 50% !important;
-    width: 170px !important;
-    height: 170px !important;
-    
-    /* GESTION DU CONTENU DE L'IMAGE */
-    object-fit: cover !important;       /* Remplir le cercle sans déformer */
-    object-position: center !important; /* Centrer le visage au milieu du cercle */
-    
-    /* DESIGN */
-    border: 3px solid #FF9F1C !important;
-    
-    /* CENTRAGE HORIZONTAL DANS LA SIDEBAR */
-    display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    margin-bottom: 20px !important; /* Petit espace sous la photo */
+/* ==========================================================================
+   2. PHOTO DE PROFIL & SIDEBAR
+   ========================================================================== */
+
+/* A. Configuration de la Sidebar (Largeur fixe pour éviter l'écrasement) */
+[data-testid="stSidebar"] {
+    background-color: #F9FAFB;
+    border-right: 1px solid #E5E7EB;
+    min-width: 300px !important; /* IMPORTANT : Garde la sidebar large */
+    width: 300px !important;
 }
 
-/* 2. (Optionnel) Force le conteneur de l'image à prendre toute la largeur pour permettre le centrage */
+/* B. Centrage du conteneur de l'image */
 [data-testid="stSidebar"] [data-testid="stImage"] {
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
+    margin-top: 20px !important;
+}
+
+/* C. L'Image elle-même (Cercle Parfait) */
+[data-testid="stSidebar"] img {
+    /* Forme & Taille */
+    border-radius: 50% !important;
+    width: 170px !important;
+    height: 170px !important;
+    
+    /* Remplissage */
+    object-fit: cover !important;
+    object-position: center !important; /* Centre le visage */
+    
+    /* Bordure */
+    border: 3px solid #FF9F1C !important;
+    
+    /* Positionnement */
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 /* ==========================================================================
    3. TYPOGRAPHIE & TEXTES (Rendre tout "un peu plus petit")
