@@ -861,6 +861,9 @@ def show_home_view():
 # DANS APP.PY (Section Header - Colonne 3)
         with c3:
             st.markdown("<br>", unsafe_allow_html=True)
+            btn_width     = "100px"  # Largeur du bouton principal (celui visible tout le temps)
+            btn_height    = "50px"   # Hauteur du bouton principal
+            text_size     = "70px"
             
             # --- 1. PRÉPARATION DES IMAGES ---
             current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -888,23 +891,35 @@ def show_home_view():
                 /* CIBLE LE BOUTON DÉCLENCHEUR DU POPOVER */
                 /* On utilise [data-testid="stPopover"] pour cibler le conteneur */
                 div[data-testid="stPopover"] button {{
+                    width: {btn_width} !important;
+                    height: {btn_height} !important;
+                    font-size: {text_size} !important;
                     background-image: url("data:image/png;base64,{b64_flag}") !important;
-                    background-size: 24px !important;
+                    background-size: 30px !important;
                     background-repeat: no-repeat !important;
                     background-position: 12px center !important; /* Calé à gauche */
-                    padding-left: 45px !important;              /* Espace pour l'image */
+                    padding-left: 5px !important;              /* Espace pour l'image */
                     
                     /* Force l'apparence */
                     border: 1px solid #E5E7EB !important;
+                    display: flex !important;             /* Active le mode "flexible" */
                     color: #374151 !important;
-                    background-color: white !important;
+                    background-color: #F9FAFB !important;
+                    align-items: center !important;       /* Centre PARFAITEMENT en hauteur */
+                    justify-content: flex-end !important; /* Horizontal : Droite -> C'EST ÇA QU'ON AJOUTE */
                     opacity: 1 !important; /* Force la visibilité */
+                    padding-top: 0px !important;          /* Enlève le gras inutile en haut */
+                    padding-bottom: 0px !important;
+                    line-height: 1 !important;      /* Réduit l'interligne */
+                    padding-top: 2px !important;
                 }}
+                
 
                 /* B. LE MENU (Largeur) */
                 div[data-testid="stPopoverBody"] {{
-                    width: 50px !important;
-                    max-width: 50px !important;
+                    width: 65px !important;
+                    max-width: 65px !important;
+                    
                 }}
                 
                 /* C. STYLE DU BOUTON SÉLECTIONNÉ (CADRE BLEU) */
@@ -936,7 +951,7 @@ def show_home_view():
             """, unsafe_allow_html=True)
 
             # --- 4. AFFICHAGE DES BOUTONS ---
-            label_btn = "FR ▾" if lang == 'fr' else "EN ▾"
+            label_btn = "FR" if lang == 'fr' else "EN"
             popover = st.popover(label_btn, use_container_width=True)
             
             with popover:
