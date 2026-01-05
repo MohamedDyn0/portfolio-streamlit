@@ -549,18 +549,15 @@ def show_experience_detail_en(e_id):
 # ==============================================================================
 def show_home_view():
     
-    # 1. SIDEBAR (PROFILE)
+    
     with st.sidebar:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(current_dir, "assets", "profile.jpg")
         
         if os.path.exists(file_path):
-# --- SUPPRIMEZ CE BLOC DANS APP.PY 
-            col_gauche, col_image, col_droite = st.sidebar.columns([1, 2, 3.5])
-            
-            with col_image:
-                # L'image est mise uniquement dans la colonne du milieu
-                st.image(file_path, use_column_width=True)
+            # --- MODIFICATION ICI : On enlève les colonnes ---
+            # On affiche l'image directement, le CSS va la centrer
+            st.image(file_path)
        
 
         st.title(current_info["name"])

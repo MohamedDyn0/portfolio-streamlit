@@ -47,25 +47,38 @@ header[data-testid="stHeader"] {
 /* DANS LE FICHIER STYLE.CSS */
 
 /* DANS STYLE.CSS */
+
+/* ==========================================================================
+   PHOTO DE PROFIL (CERCLE PARFAIT & CENTRÉ)
+   ========================================================================== */
+
+/* 1. On cible l'image dans la sidebar */
 [data-testid="stSidebar"] img {
-    /* FORME RONDE */
+    /* FORME & TAILLE */
     border-radius: 50% !important;
-    
-    /* TAILLE FIXE (Cercle parfait) */
     width: 170px !important;
     height: 170px !important;
     
-    /* REMPLISSAGE */
-    object-fit: cover !important;
+    /* GESTION DU CONTENU DE L'IMAGE */
+    object-fit: cover !important;       /* Remplir le cercle sans déformer */
+    object-position: center !important; /* Centrer le visage au milieu du cercle */
     
-    /* BORDURE */
+    /* DESIGN */
     border: 3px solid #FF9F1C !important;
     
-    /* On enlève les marges bizarres, c'est Python qui gère le centre maintenant */
-    margin: 0 !important; 
+    /* CENTRAGE HORIZONTAL DANS LA SIDEBAR */
     display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 20px !important; /* Petit espace sous la photo */
 }
 
+/* 2. (Optionnel) Force le conteneur de l'image à prendre toute la largeur pour permettre le centrage */
+[data-testid="stSidebar"] [data-testid="stImage"] {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
 /* ==========================================================================
    3. TYPOGRAPHIE & TEXTES (Rendre tout "un peu plus petit")
    ========================================================================== */
