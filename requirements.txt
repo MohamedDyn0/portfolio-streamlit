@@ -8,7 +8,10 @@ streamlit-option-menu
 requests
 pandas
 numpy
-ultralytics
 textblob
 google-generativeai
+watchdog
+# D'abord la version headless
 opencv-python-headless
+# Ensuite Ultralytics (qui utilisera la version ci-dessus)
+ultralytics
