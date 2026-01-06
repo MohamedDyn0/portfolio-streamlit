@@ -659,16 +659,26 @@ def show_home_view():
 
         elif demo_key == "chatbot":
             st.markdown("#### 🩺 Assistant Médical (IA Générative)")
-# --- MODIFICATION COMPATIBLE DIGITALOCEAN ---
-            if "GEMINI_API_KEY" in st.secrets:
-                api_key = st.secrets["GEMINI_API_KEY"]
-            else:
-                api_key = os.getenv("GEMINI_API_KEY")
+            
+            # --- CORRECTION FINALE ---
+            # 1. On cherche d'abord dans DigitalOcean (Variable d'environnement)
+            # Cela évite de planter si le fichier secrets.toml est absent
+            api_key = os.getenv("GEMINI_API_KEY")
 
+            # 2. Si on n'a rien trouvé, on tente le fichier secrets (pour le local)
             if not api_key:
-                st.error("🚨 Clé API manquante. Veuillez ajouter GEMINI_API_KEY dans les variables d'environnement.")
+                try:
+                    api_key = st.secrets["GEMINI_API_KEY"]
+                except FileNotFoundError:
+                    pass # Pas de fichier secrets, ce n'est pas grave
+                except KeyError:
+                    pass # Clé absente du fichier
+            
+            # 3. Vérification finale
+            if not api_key:
+                st.error("🚨 Clé API manquante. Vérifiez vos variables d'environnement DigitalOcean.")
                 st.stop()
-            # --------------------------------------------
+            # --------------------------
             import google.generativeai as genai
             model = None
             try:
