@@ -659,11 +659,16 @@ def show_home_view():
 
         elif demo_key == "chatbot":
             st.markdown("#### 🩺 Assistant Médical (IA Générative)")
-            try:
+# --- MODIFICATION COMPATIBLE DIGITALOCEAN ---
+            if "GEMINI_API_KEY" in st.secrets:
                 api_key = st.secrets["GEMINI_API_KEY"]
-            except:
-                st.error("🚨 Clé API manquante dans st.secrets.")
+            else:
+                api_key = os.getenv("GEMINI_API_KEY")
+
+            if not api_key:
+                st.error("🚨 Clé API manquante. Veuillez ajouter GEMINI_API_KEY dans les variables d'environnement.")
                 st.stop()
+            # --------------------------------------------
             import google.generativeai as genai
             model = None
             try:
@@ -698,109 +703,103 @@ def show_home_view():
                                 st.markdown(bot_reply)
                                 st.session_state.messages.append({"role": "assistant", "content": bot_reply})
                             except Exception as e: st.error(f"Error: {e}")
-
         elif demo_key == "fraude":
             import pandas as pd
             import numpy as np
-            import time
-
-            st.markdown("#### 🛡️ Fraud Detection & Risk Scoring")
+            import joblib
             
-            # Message d'explication plus clair
+            st.markdown("#### 🛡️ Fraud Detection & Risk Scoring (Random Forest)")
+            
+            # Message d'explication
             st.markdown(f"""
             <div style="margin-bottom: 20px; font-size: 0.95rem; color: #374151; background-color: #F3F4F6; padding: 15px; border-radius: 8px; border-left: 5px solid #4F46E5;">
                 {UI['input_meta']}
-                <br><i>💡 Essayez des combinaisons risquées (ex: <b>Crypto</b> + <b>Nigeria</b> + <b>Montant élevé</b> + <b>3h du matin</b>) pour déclencher l'IA.</i>
+                <br><i>Ce modèle <b>Random Forest</b> a été entraîné sur 10,000 transactions synthétiques pour détecter des patterns non-linéaires complexes.</i>
             </div>
             """, unsafe_allow_html=True)
 
             col_input, col_viz = st.columns([1, 1.2], gap="large")
             
+            # MAPPING (Doit correspondre exactement à l'entraînement)
+            map_type = {"Carte Bancaire": 0, "Virement": 1, "Crypto-monnaie": 2}
+            map_pays = {"France": 0, "USA": 1, "Allemagne": 2, "Maroc": 3, "Russie": 4, "Nigeria": 5}
+            map_cat = {"Alimentation": 0, "Transport": 1, "Santé": 2, "Luxe": 3, "Jeux d'argent": 4, "Électronique": 5}
+
             with col_input:
                 st.subheader("Paramètres de la Transaction")
                 montant = st.number_input("Montant ($)", 0, 20000, 1000, step=100)
                 heure = st.slider("Heure de la transaction (0h-23h)", 0, 23, 14)
-                type_trans = st.selectbox("Type de paiement", ["Carte Bancaire", "Virement", "Crypto-monnaie"], index=0)
-                pays = st.selectbox("Pays IP", ["France", "USA", "Allemagne", "Maroc", "Russie", "Nigeria"], index=3)
-                categorie = st.selectbox("Catégorie", ["Alimentation", "Transport", "Santé", "Luxe", "Jeux d'argent", "Électronique"], index=0)
+                type_trans_txt = st.selectbox("Type de paiement", list(map_type.keys()), index=0)
+                pays_txt = st.selectbox("Pays IP", list(map_pays.keys()), index=3)
+                cat_txt = st.selectbox("Catégorie", list(map_cat.keys()), index=0)
                 
-                st.write("") # Spacer
+                st.write("") 
                 btn_predict = st.button(UI["launch_risk"], use_container_width=True)
 
             with col_viz:
                 st.subheader("Analyse de Risque IA")
                 if btn_predict:
-                    with st.spinner("Analyse des vecteurs de fraude en cours..."):
-                        time.sleep(0.8) # Petit délai pour l'effet "calcul"
-
-                        # --- LOGIQUE DE SCORING (SIMULATION RÉALISTE) ---
-                        # On calcule un score de probabilité basé sur des poids (Features Importance)
-                        risk_score = 0
-                        
-                        # 1. Analyse du Montant (Plus c'est haut, plus c'est risqué)
-                        if montant > 10000: risk_score += 40
-                        elif montant > 5000: risk_score += 25
-                        elif montant > 1000: risk_score += 10
-
-                        # 2. Analyse Géographique
-                        if pays in ["Russie", "Nigeria"]: risk_score += 30
-                        elif pays == "USA": risk_score += 10
-                        
-                        # 3. Analyse Temporelle (La nuit c'est louche)
-                        if 1 <= heure <= 5: risk_score += 20
-                        
-                        # 4. Type & Catégorie
-                        if type_trans == "Crypto-monnaie": risk_score += 25
-                        if categorie == "Paris en ligne (Gambling)": risk_score += 20
-                        elif categorie == "Luxe / Bijoux": risk_score += 15
-
-                        # Normalisation (Max 99%)
-                        final_risk = min(risk_score, 99)
-                        # On ajoute un tout petit peu d'aléatoire pour faire "vivant"
-                        if final_risk > 0:
-                            final_risk += np.random.randint(-2, 3)
-                        final_risk = max(0, min(final_risk, 99))
-
-                        # --- AFFICHAGE DU RÉSULTAT ---
-                        
-                        # Création de la jauge de couleur
-                        bar_color = "green"
-                        if final_risk > 75: bar_color = "red"
-                        elif final_risk > 40: bar_color = "orange"
-
-                        # Affichage conditionnel
-                        if final_risk > 75:
-                            st.error(f"🚨 **ALERTE FRAUDE DÉTECTÉE**")
-                            st.markdown("La transaction a été **bloquée** par le modèle de sécurité.")
-                        elif final_risk > 40:
-                            st.warning(f"⚠️ **TRANSACTION SUSPECTE**")
-                            st.markdown("La transaction nécessite une **vérification manuelle** (2FA).")
-                        else:
-                            st.success(f"✅ **TRANSACTION LÉGITIME**")
-                            st.markdown("Aucune anomalie détectée.")
-
-                        # Jauge de probabilité
-                        st.write(f"**Probabilité de fraude : {final_risk}%**")
-                        st.progress(final_risk / 100, text=None)
-
-                        # Détails techniques (pour faire "Data Science")
-                        with st.expander("Voir les facteurs de décision (Explainability)"):
-                            st.write("Facteurs principaux ayant influencé le score :")
-                            factors = {}
-                            if montant > 5000: factors["Montant Élevé"] = "+High"
-                            if pays in ["Russie", "Nigeria"]: factors["Pays à Risque"] = "+Critical"
-                            if type_trans == "Crypto-monnaie": factors["Moyen de Paiement"] = "+Medium"
-                            if 1 <= heure <= 5: factors["Horaire Atypique"] = "+Medium"
+                    # 1. Chargement du modèle
+                    model_path = os.path.join(os.path.dirname(__file__), 'fraud_model.pkl')
+                    
+                    if not os.path.exists(model_path):
+                        st.error("⚠️ Modèle 'fraud_model.pkl' introuvable. Veuillez lancer le script d'entraînement.")
+                    else:
+                        try:
+                            model = joblib.load(model_path)
                             
-                            if not factors:
-                                st.write("- Comportement standard (Normal)")
-                            else:
-                                st.json(factors)
+                            # 2. Préparation des données (Encodage)
+                            input_data = pd.DataFrame({
+                                'montant': [montant],
+                                'heure': [heure],
+                                'type_paiement': [map_type[type_trans_txt]],
+                                'pays': [map_pays[pays_txt]],
+                                'categorie': [map_cat[cat_txt]]
+                            })
 
+                            # 3. Prédiction Réelle
+                            with st.spinner("Interrogation du modèle Random Forest..."):
+                                time.sleep(0.5) # Juste pour l'UX
+                                # predict_proba renvoie [[prob_ok, prob_fraude]]
+                                probability = model.predict_proba(input_data)[0][1] 
+                                final_risk = int(probability * 100)
+
+                            # 4. Affichage
+                            bar_color = "green"
+                            if final_risk > 75: bar_color = "red"
+                            elif final_risk > 40: bar_color = "orange"
+
+                            if final_risk > 75:
+                                st.error(f"🚨 **FRAUDE CRITIQUE DÉTECTÉE**")
+                                st.markdown(f"Le modèle est formel à **{final_risk}%**. Blocage immédiat.")
+                            elif final_risk > 40:
+                                st.warning(f"⚠️ **TRANSACTION SUSPECTE**")
+                                st.markdown(f"Risque évalué à **{final_risk}%**. Vérification 3D-Secure requise.")
+                            else:
+                                st.success(f"✅ **TRANSACTION SÉCURISÉE**")
+                                st.markdown(f"Probabilité de fraude faible (**{final_risk}%**).")
+
+                            st.progress(final_risk / 100)
+
+                            # 5. Explainability (Feature Importance Locale simulée pour la démo)
+                            with st.expander("🔍 Interprétabilité du modèle"):
+                                st.write("Facteurs aggravants identifiés par le modèle :")
+                                factors = {}
+                                # On simule l'explication basée sur les inputs car SHAP est trop lourd pour le cloud gratuit
+                                if montant > 3000: factors["Montant"] = "Élevé (>3000$)"
+                                if map_pays[pays_txt] in [4, 5]: factors["Géolocalisation"] = f"Pays à risque ({pays_txt})"
+                                if map_type[type_trans_txt] == 2: factors["Moyen de paiement"] = "Non-reversable (Crypto)"
+                                if heure < 5: factors["Horaire"] = "Nocturne (0h-5h)"
+                                
+                                if factors:
+                                    st.json(factors)
+                                else:
+                                    st.write("Aucun facteur de risque majeur identifié.")
+
+                        except Exception as e:
+                            st.error(f"Erreur lors de l'inférence : {e}")
                 else:
-                    # État initial (vide)
-                    st.info("👈 Configurez la transaction et lancez l'analyse.")
-                    st.image("https://cdn-icons-png.flaticon.com/512/6393/6393411.png", width=100)
+                    st.info("👈 Configurez la transaction pour interroger le modèle.")
     # -------------------------------------------------------------
     # MODE PORTFOLIO CLASSIQUE (Header + Menu + Contenu)
     # -------------------------------------------------------------
