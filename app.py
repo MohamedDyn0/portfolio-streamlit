@@ -884,7 +884,7 @@ def show_home_view():
             
             # --- MODIFICATION : Boutons HTML personnalisés (Plus petits) ---
             current_dir = os.path.dirname(os.path.abspath(__file__))
-            path_fr = os.path.join(current_dir, "assets", "CV_Mohamed_Dyn_FR.pdf")
+            path_fr = os.path.join(current_dir, "assets", "CV_Mohamed_DYN_FR.pdf")
             path_en = os.path.join(current_dir, "assets", "CV_Mohamed_Dyn_EN.pdf")
             
             # Style CSS pour un bouton "Petit et Propre"
