@@ -15,3 +15,5 @@ watchdog
 opencv-python-headless
 # Ensuite Ultralytics (qui utilisera la version ci-dessus)
 ultralytics
+scikit-learn
+joblib

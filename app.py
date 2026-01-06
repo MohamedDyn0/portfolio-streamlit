@@ -29,6 +29,61 @@ from streamlit_option_menu import option_menu
 from PIL import Image
 import requests
 
+st.markdown("""
+<style>
+    /* 1. La carte conteneur pour chaque catégorie */
+    .skill-card {
+        background-color: white;
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        height: 100%; /* Pour que les cartes aient la même hauteur */
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Effet de survol sympa */
+    .skill-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        border-color: #4F46E5;
+    }
+
+    /* 2. Le titre de la catégorie (ex: Data Science) */
+    .skill-title {
+        color: #111827;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px solid #F3F4F6;
+        padding-bottom: 10px;
+    }
+
+    /* 3. Les badges (les pilules de compétences) */
+    .skill-badge {
+        background-color: #EEF2FF; /* Fond bleu très clair */
+        color: #4F46E5;            /* Texte indigo */
+        border: 1px solid #C7D2FE; /* Bordure légère */
+        padding: 6px 14px;
+        border-radius: 20px;       /* Arrondi total */
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-block;     /* Important pour l'alignement */
+        margin-right: 8px;
+        margin-bottom: 8px;
+        transition: all 0.2s;
+    }
+
+    .skill-badge:hover {
+        background-color: #4F46E5;
+        color: white;
+    }
+</style>
+""", unsafe_allow_html=True)
 # ==============================================================================
 # 1. CONFIGURATION & GESTION DE L'ÉTAT (URL & SESSION)
 # ==============================================================================
@@ -1085,10 +1140,34 @@ def show_home_view():
         # 3. COMPÉTENCES
         elif selected == UI["menu_items"][2]:
             st.markdown(UI["section_skills"])
-            for category, skills in current_skills.items():
-                skills_html = "".join([f'<span class="tech-badge">{skill}</span>' for skill in skills])
-                st.markdown(f"""<div class="skill-box"><div class="skill-category-title">🔹 {category}</div><div>{skills_html}</div></div>""", unsafe_allow_html=True)
+            st.write("") # Petit espace
 
+            # On crée une grille de 2 colonnes
+            cols = st.columns(2) 
+            
+            # On récupère les clés (catégories) et on boucle
+            # enumerate permet de savoir si on met à gauche (pair) ou à droite (impair)
+            for i, (category, skills) in enumerate(current_skills.items()):
+                
+                # Génération du HTML pour les badges
+                # Note : On ne fait plus un simple "".join(), on enveloppe chaque skill dans un <span>
+                badges_html = ""
+                for skill in skills:
+                    badges_html += f'<span class="skill-badge">{skill}</span>'
+                
+                # Le contenu complet de la carte
+                card_html = f"""
+                <div class="skill-card">
+                    <div class="skill-title">{category}</div>
+                    <div style="display: flex; flex-wrap: wrap;">
+                        {badges_html}
+                    </div>
+                </div>
+                """
+                
+                # Affichage dans la colonne de gauche ou de droite
+                with cols[i % 2]:
+                    st.markdown(card_html, unsafe_allow_html=True)
         # 4. DÉMOS LIVE
         elif selected == UI["menu_items"][3]:
             st.markdown(UI["section_demos"])
