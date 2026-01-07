@@ -1240,7 +1240,7 @@ def show_home_view():
                             st.warning(UI["form_error"])
                         else:
                             try:
-                                formspree_url = "https://formspree.io/f/mlgeerad" 
+                                formspree_url = "https://formspree.io/f/mgovgaoo" 
                                 response = requests.post(
                                     formspree_url,
                                     json={"name": name, "email": email, "message": message}
